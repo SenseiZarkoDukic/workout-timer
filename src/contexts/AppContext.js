@@ -7,29 +7,27 @@ import React, {
   useState,
 } from "react";
 
+const formatTime = function formatTime(date) {
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(date);
+};
+
 const AppContext = createContext();
 
 const AppContextProvider = ({ children }) => {
-  const formatTime = useCallback(function formatTime(date) {
-    return new Intl.DateTimeFormat("en", {
-      month: "short",
-      year: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    }).format(date);
+  const timer = useCallback(function () {
+    setTime(formatTime(new Date()));
   }, []);
-  const timer = useCallback(
-    function () {
-      setTime(formatTime(new Date()));
-    },
-    [formatTime]
-  );
 
   const [time, setTime] = useState(formatTime(new Date()));
   const partOfDay = time.slice(-2);
-  const workouts = useMemo(
-    () => [
+  const workouts = useMemo(() => {
+    return [
       {
         name: "Full-body workout",
         numExercises: partOfDay === "AM" ? 9 : 8,
@@ -50,9 +48,8 @@ const AppContextProvider = ({ children }) => {
         name: "Core only",
         numExercises: partOfDay === "AM" ? 5 : 4,
       },
-    ],
-    [partOfDay]
-  );
+    ];
+  }, [partOfDay]);
 
   const [allowSound, setAllowSound] = useState(true);
 
@@ -64,7 +61,7 @@ const AppContextProvider = ({ children }) => {
 
       return () => clearInterval(id);
     },
-    [allowSound, time, partOfDay, formatTime, timer]
+    [allowSound, time, partOfDay, timer]
   );
 
   const value = useMemo(

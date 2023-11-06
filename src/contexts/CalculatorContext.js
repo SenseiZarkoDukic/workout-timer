@@ -19,6 +19,7 @@ const CalculatorContextProvider = ({ children }) => {
       number,
       sets,
       speed,
+      duration,
       durationBreak,
       mins,
       seconds,
@@ -26,8 +27,22 @@ const CalculatorContextProvider = ({ children }) => {
       setSets,
       setSpeed,
       setDurationBreak,
+      workouts,
     }),
-    [number, sets, speed, durationBreak, mins, seconds]
+    [
+      number,
+      sets,
+      speed,
+      duration,
+      durationBreak,
+      mins,
+      seconds,
+      setNumber,
+      setSets,
+      setSpeed,
+      setDurationBreak,
+      workouts,
+    ]
   );
   return (
     <CalculatorContext.Provider value={value}>
