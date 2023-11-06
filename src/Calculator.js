@@ -1,18 +1,22 @@
 import { memo, useState } from "react";
 import clickSound from "./ClickSound.m4a";
+import { useApp } from "./contexts/AppContext";
 import { useCalculator } from "./contexts/CalculatorContext";
 
 const Calculator = memo(function Calculator() {
-  const { workouts, allowSound } = useCalculator();
-
-  const [number, setNumber] = useState(workouts.at(0).numExercises);
-  const [sets, setSets] = useState(3);
-  const [speed, setSpeed] = useState(90);
-  const [durationBreak, setDurationBreak] = useState(5);
-
-  const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
-  const mins = Math.floor(duration);
-  const seconds = (duration - mins) * 60;
+  const { workouts, allowSound } = useApp();
+  const {
+    number,
+    sets,
+    speed,
+    durationBreak,
+    setNumber,
+    setSets,
+    setSpeed,
+    setDurationBreak,
+    mins,
+    seconds,
+  } = useCalculator();
 
   const playSound = function () {
     if (!allowSound) return;

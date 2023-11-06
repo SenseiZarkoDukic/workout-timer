@@ -1,8 +1,8 @@
 import { memo } from "react";
-import { useCalculator } from "./contexts/CalculatorContext";
+import { useApp } from "./contexts/AppContext";
 
 const ToggleSounds = memo(function ToggleSounds() {
-  const { allowSound, setAllowSound } = useCalculator();
+  const { allowSound, setAllowSound } = useApp();
   return (
     <button
       className="btn-sound"

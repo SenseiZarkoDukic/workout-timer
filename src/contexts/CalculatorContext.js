@@ -1,78 +1,34 @@
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useMemo, useState } from "react";
+import { useApp } from "./AppContext";
 
 const CalculatorContext = createContext();
 
 const CalculatorContextProvider = ({ children }) => {
-  const formatTime = useCallback(function formatTime(date) {
-    return new Intl.DateTimeFormat("en", {
-      month: "short",
-      year: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    }).format(date);
-  }, []);
+  const { workouts } = useApp();
+  const [number, setNumber] = useState(workouts.at(0).numExercises);
+  const [sets, setSets] = useState(3);
+  const [speed, setSpeed] = useState(90);
+  const [durationBreak, setDurationBreak] = useState(5);
 
-  const [time, setTime] = useState(formatTime(new Date()));
-  const partOfDay = time.slice(-2);
-  const workouts = useMemo(
-    () => [
-      {
-        name: "Full-body workout",
-        numExercises: partOfDay === "AM" ? 9 : 8,
-      },
-      {
-        name: "Arms + Legs",
-        numExercises: 6,
-      },
-      {
-        name: "Arms only",
-        numExercises: 3,
-      },
-      {
-        name: "Legs only",
-        numExercises: 4,
-      },
-      {
-        name: "Core only",
-        numExercises: partOfDay === "AM" ? 5 : 4,
-      },
-    ],
-    [partOfDay]
-  );
-
-  const [allowSound, setAllowSound] = useState(true);
-
-  // Will be be AM or PM
-
-  useEffect(
-    function () {
-      const id = setInterval(function () {
-        setTime(formatTime(new Date()));
-      }, 1000);
-
-      return () => clearInterval(id);
-    },
-    [allowSound, time, partOfDay, formatTime]
-  );
+  const duration = (number * sets * speed) / 60 + (sets - 1) * durationBreak;
+  const mins = Math.floor(duration);
+  const seconds = (duration - mins) * 60;
 
   const value = useMemo(
     () => ({
-      allowSound,
-      setAllowSound,
-      time,
-      workouts,
+      number,
+      sets,
+      speed,
+      durationBreak,
+      mins,
+      seconds,
+      setNumber,
+      setSets,
+      setSpeed,
+      setDurationBreak,
     }),
-    [allowSound, setAllowSound, time, workouts]
+    [number, sets, speed, durationBreak, mins, seconds]
   );
-
   return (
     <CalculatorContext.Provider value={value}>
       {children}
