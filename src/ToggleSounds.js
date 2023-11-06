@@ -1,8 +1,6 @@
 import { memo } from "react";
-import { useApp } from "./contexts/AppContext";
 
-function ToggleSounds() {
-  const { allowSound, setAllowSound } = useApp();
+function ToggleSounds({ allowSound, setAllowSound }) {
   return (
     <button
       className="btn-sound"
