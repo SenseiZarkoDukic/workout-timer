@@ -19,6 +19,12 @@ const AppContextProvider = ({ children }) => {
       second: "2-digit",
     }).format(date);
   }, []);
+  const timer = useCallback(
+    function () {
+      setTime(formatTime(new Date()));
+    },
+    [formatTime]
+  );
 
   const [time, setTime] = useState(formatTime(new Date()));
   const partOfDay = time.slice(-2);
@@ -54,13 +60,11 @@ const AppContextProvider = ({ children }) => {
 
   useEffect(
     function () {
-      const id = setInterval(function () {
-        setTime(formatTime(new Date()));
-      }, 1000);
+      const id = setInterval(timer(), 1000);
 
       return () => clearInterval(id);
     },
-    [allowSound, time, partOfDay, formatTime]
+    [allowSound, time, partOfDay, formatTime, timer]
   );
 
   const value = useMemo(
