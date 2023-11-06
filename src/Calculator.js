@@ -26,6 +26,10 @@ function Calculator({ workouts, allowSound }) {
     setDuration((duration) => Math.floor(duration) + 1);
   }
 
+  function handleDec() {
+    setDuration((duration) => Math.ceil(duration) - 1);
+  }
+
   return (
     <>
       <form>
