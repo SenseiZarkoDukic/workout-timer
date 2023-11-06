@@ -1,7 +1,10 @@
 import { memo, useState } from "react";
 import clickSound from "./ClickSound.m4a";
+import { useCalculator } from "./contexts/CalculatorContext";
 
-const Calculator = memo(function Calculator({ workouts, allowSound }) {
+const Calculator = memo(function Calculator() {
+  const { workouts, allowSound } = useCalculator();
+
   const [number, setNumber] = useState(workouts.at(0).numExercises);
   const [sets, setSets] = useState(3);
   const [speed, setSpeed] = useState(90);
